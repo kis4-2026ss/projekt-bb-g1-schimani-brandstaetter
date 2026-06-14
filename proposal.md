@@ -3,7 +3,7 @@
 ## Team Members
 
 * Daniel Brandstätter
-* [Name des zweiten Teammitglieds]
+* Jennifer Schimani
 
 ---
 

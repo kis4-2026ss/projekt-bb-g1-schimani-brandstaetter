@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import ast
+import builtins
 
 from models import CodeCellAnalysis, NotebookCell
 
+BUILTINS = set(dir(builtins))
 
 class AstParser:
     def validate_python(self, code: str) -> bool:
@@ -54,7 +56,9 @@ class AstParser:
         return {
             node.id
             for node in ast.walk(tree)
-            if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load)
+            if isinstance(node, ast.Name) 
+            and isinstance(node.ctx, ast.Load)
+            and node.id not in BUILTINS
         }
 
     def _extract_imports(self, tree: ast.AST) -> list[str]:

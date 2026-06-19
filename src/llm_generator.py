@@ -224,19 +224,20 @@ class LLMGenerator:
             "3. Convert markdown cells into `mo.md(...)`.",
             "4. Use one `@app.cell` per notebook cell.",
             "5. Respect dependency relationships.",
-            "6. Variables produced by one cell must be returned and injected into dependent cells.",
-            "7. Do not call decorated cell functions directly. Never write code like `x = __()`, `x = _()`, or `x = __init__()`.",
-            "8. Public variable names must be defined in exactly one cell. If a local helper variable is needed, prefix it with `_`.",
-            "9. A dependent cell must receive values through function parameters, for example `def _(x): print(x)`.",
-            "10. Cell function names must be unique private placeholders such as `_cell_0`, `_cell_1`, `_cell_2`; they are not notebook APIs.",
-            "11. End the file with `if __name__ == \"__main__\": app.run()`.",
-            "12. Return ONLY Python code. No markdown. No explanations.",
+            "6. Variables produced by a cell that are needed by other cells MUST be explicitly returned at the end of the function.",
+            "7. CRUCIAL: If a cell returns only ONE variable, it MUST end with a trailing comma (e.g., `return my_var,`).",
+            "8. Do not call decorated cell functions directly. Never write code like `x = __()`, `x = _()`, or `x = __init__()`.",
+            "9. Public variable names must be defined in exactly one cell. If a local helper variable is needed, prefix it with `_`.",
+            "10. A dependent cell must receive values through function parameters, for example `def _(x): print(x)`.",
+            "11. Cell function names must be unique private placeholders such as `_cell_0`, `_cell_1`, `_cell_2`; they are not notebook APIs.",
+            "12. End the file with `if __name__ == \"__main__\": app.run()`.",
+            "13. Return ONLY Python code. No markdown. No explanations.",
             "",
             "Correct dependency example:",
             "@app.cell",
             "def _():",
             "    x = 10",
-            "    return x",
+            "    return x,",
             "",
             "@app.cell",
             "def __(x):",
@@ -291,7 +292,7 @@ class LLMGenerator:
         prompt.extend(
             [
                 "=================",
-                "DEPENDENCY GRAPH",
+                "DEPENDENCY GRAPH (EXACT VARIABLES)",
                 "=================",
                 "",
             ]
@@ -299,7 +300,14 @@ class LLMGenerator:
 
         for edge in dependency_graph.dependency_edges:
             variables = ", ".join(edge.variables)
-            prompt.append(f"{edge.source} -> {edge.target}: {variables}")
+            prompt.append(f"Cell {edge.source} MUST pass these variables to Cell {edge.target}: [{variables}]")
+
+        prompt.extend([
+            "",
+            "STRICT RULES FOR GENERATION:",
+            "1. Each cell function MUST accept the variables listed above as arguments.",
+            "2. Example: If Cell 0 passes ['df'] to Cell 1, Cell 1 MUST be 'def _(df):'"
+        ])
 
         return "\n".join(prompt)
 

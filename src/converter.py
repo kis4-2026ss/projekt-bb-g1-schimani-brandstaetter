@@ -36,6 +36,7 @@ class NotebookConverter:
         input_file: str | Path,
         output_file: str | Path = "output_notebook.py",
         run_test: bool = True,
+        strict_validation: bool = False,
     ) -> None:
         print("Loading notebook...")
         notebook = self.json_parser.parse(input_file)
@@ -54,7 +55,15 @@ class NotebookConverter:
             analyzed_cells,
             graph,
         )
-        self.ast_parser.validate_marimo_output(marimo_code)
+        validation_error = self.ast_parser.check_marimo_output(marimo_code)
+
+        if validation_error and strict_validation:
+            raise RuntimeError(validation_error)
+
+        if validation_error:
+            print("\n=== MARIMO VALIDATION WARNING ===")
+            print(validation_error)
+            print("Saving generated output anyway.")
 
         output_path = Path(output_file)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -151,6 +160,7 @@ def convert_notebook(
     provider: str | None = None,
     normalization_model: str | None = None,
     generation_model: str | None = None,
+    strict_validation: bool = False,
 ) -> None:
     llm_generator = LLMGenerator(
         provider=provider,
@@ -161,6 +171,7 @@ def convert_notebook(
         input_file,
         output_file,
         run_test=run_test,
+        strict_validation=strict_validation,
     )
 
 
@@ -199,6 +210,11 @@ def main() -> None:
         default=None,
         help="Model used to generate the Marimo notebook.",
     )
+    parser.add_argument(
+        "--strict-validation",
+        action="store_true",
+        help="Abort instead of saving when generated Marimo validation fails.",
+    )
     args = parser.parse_args()
 
     try:
@@ -206,10 +222,11 @@ def main() -> None:
             args.input_file,
             args.output_file,
             run_test=not args.no_test,
-            provider=args.provider,
-            normalization_model=args.normalization_model,
-            generation_model=args.generation_model,
-        )
+        provider=args.provider,
+        normalization_model=args.normalization_model,
+        generation_model=args.generation_model,
+        strict_validation=args.strict_validation,
+    )
     except RuntimeError as exc:
         print("\nConversion aborted.")
         print(f"Reason: {exc}")

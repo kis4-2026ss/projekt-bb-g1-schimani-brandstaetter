@@ -1,0 +1,19 @@
+COMMAND: C:\Program Files\Python313\python.exe src/converter.py C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\test_notebooks\04_cd_with_generated_csv.ipynb C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\gemini_outputs\04_cd_with_generated_csv.py --provider gemini --no-test
+RETURN CODE: 0
+
+STDOUT:
+Loading notebook...
+Processing cells...
+Cell 1: Python OK
+Cell 2: Normalizing via LLM...
+Cell 3: Python OK
+Building dependency graph...
+Graph nodes: 3
+Graph edges: 1
+Generating Marimo notebook...
+Saved: C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\gemini_outputs\04_cd_with_generated_csv.py
+
+Done.
+
+
+STDERR:

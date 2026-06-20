@@ -1,0 +1,354 @@
+Jupyter2Marimo Test Cases
+=========================
+
+Ziel:
+Diese Liste beschreibt die reduzierten und priorisierten Testfaelle fuer den
+Converter. Es geht nicht um einen Vergleich mit dem Marimo-Standard-Converter,
+sondern darum, ob unser AI-gestuetzter Ansatz zentrale Jupyter-Features sinnvoll
+in Marimo ueberfuehren kann.
+
+Alle Tests sollten nach Moeglichkeit ihre Beispieldaten selbst erzeugen. Dadurch
+sind die Notebooks reproduzierbar, brauchen keine externen Dateien und das
+Ergebnis ist in Marimo direkt sichtbar.
+
+Machine-Learning-Notebooks werden bewusst nicht getestet.
+
+
+1. Basic Python mit Imports, Funktionen und Datenfluss
+-----------------------------------------------------
+
+Soll enthalten:
+    - mehrere Code-Zellen
+    - einfache Variablenabhaengigkeiten
+    - import mit Alias, z.B. import pandas as pd
+    - from-import, z.B. from pathlib import Path
+    - eine kleine Funktion, die spaeter verwendet wird
+
+Beispiel:
+    Cell 1:
+        import pandas as pd
+        from pathlib import Path
+        base = 10
+
+    Cell 2:
+        def add_tax(value):
+            return value * 1.2
+
+    Cell 3:
+        df = pd.DataFrame({"value": [base, add_tax(base)]})
+        p = Path(".")
+        print(df)
+
+Warum sinnvoll:
+    Deckt die wichtigsten normalen Python-Faelle in einem Test ab: Datenfluss,
+    Imports, Aliase, from-imports und Funktionen.
+
+
+2. Timing Magics: %timeit und %%time
+------------------------------------
+
+Soll enthalten:
+    - line magic %timeit
+    - cell magic %%time
+    - sichtbare Ausgabe
+
+Beispiel:
+    %timeit x = 10
+
+    %%time
+    total = sum(range(100000))
+    print(total)
+
+Warum sinnvoll:
+    Timing-Magics sind sehr typische Jupyter-Features und kein gueltiges Python.
+    Der Converter muss sie normalisieren oder sinnvoll ersetzen.
+
+
+3. %matplotlib inline mit Plot
+------------------------------
+
+Soll enthalten:
+    - %matplotlib inline
+    - selbst erzeugte Daten
+    - matplotlib Plot
+
+Beispiel:
+    %matplotlib inline
+    import matplotlib.pyplot as plt
+    values = [1, 4, 9, 16]
+    plt.plot(values)
+    plt.show()
+
+Warum sinnvoll:
+    Sehr haeufig in Data-Science-Notebooks. Die Magic ist in Marimo nicht noetig,
+    der Plot soll aber sichtbar bleiben.
+
+
+4. %cd mit selbst erzeugter CSV
+-------------------------------
+
+Soll enthalten:
+    - selbst erzeugte CSV-Datei
+    - %cd oder vergleichbarer Arbeitsverzeichnis-Wechsel
+    - anschliessendes Einlesen der Datei
+
+Beispiel:
+    import pandas as pd
+    df = pd.DataFrame({"name": ["Ada", "Grace"], "score": [95, 98]})
+    df.to_csv("scores.csv", index=False)
+    %cd .
+    loaded = pd.read_csv("scores.csv")
+    print(loaded)
+
+Warum sinnvoll:
+    Working-directory-Zustand ist in Jupyter oft implizit und kann spaetere
+    Zellen beeinflussen.
+
+
+5. %%bash Cell Magic
+--------------------
+
+Soll enthalten:
+    - %%bash
+    - mehrere Shell-Befehle
+    - sichtbare Shell-Ausgabe
+
+Beispiel:
+    %%bash
+    echo "hello"
+    ls
+
+Warum sinnvoll:
+    Cell Magics betreffen die ganze Zelle und muessen z.B. in subprocess-Code
+    uebersetzt werden.
+
+
+6. %%writefile
+--------------
+
+Soll enthalten:
+    - %%writefile
+    - erzeugte Datei wird spaeter gelesen
+
+Beispiel:
+    %%writefile hello.txt
+    Hello from notebook
+
+    with open("hello.txt", encoding="utf-8") as f:
+        print(f.read())
+
+Warum sinnvoll:
+    Schreibt Dateien aus Notebook-Zellen heraus. Das ist Jupyter-spezifisch und
+    muss in normalen Python-Code ueberfuehrt werden.
+
+
+7. Shell Commands mit Variablen und Output Capture
+--------------------------------------------------
+
+Soll enthalten:
+    - selbst erzeugte Dateien
+    - einfacher Shell Command, z.B. !ls oder !dir
+    - Shell Command mit Python-Variable
+    - Shell Output in Python-Variable
+
+Beispiel:
+    from pathlib import Path
+    filename = "data.csv"
+    Path(filename).write_text("a,b\n1,2\n", encoding="utf-8")
+
+    !ls
+    !cat {filename}
+    files = !ls *.csv
+    print(files)
+
+Warum sinnvoll:
+    Shell-Integration ist eines der wichtigsten Jupyter-Features, besonders mit
+    Variableninterpolation und Output Capture.
+
+
+8. display(HTML(...))
+---------------------
+
+Soll enthalten:
+    - IPython.display.HTML
+    - sichtbare HTML-Ausgabe
+
+Beispiel:
+    from IPython.display import display, HTML
+    display(HTML("<h3>Report</h3><b>Hello</b>"))
+
+Warum sinnvoll:
+    Jupyter-Display-Konstrukte muessen in Marimo-Ausgaben ueberfuehrt werden.
+
+
+9. display(DataFrame)
+---------------------
+
+Soll enthalten:
+    - selbst erzeugter DataFrame
+    - display(df)
+
+Beispiel:
+    import pandas as pd
+    from IPython.display import display
+    df = pd.DataFrame({"city": ["Vienna", "Graz"], "value": [10, 20]})
+    display(df)
+
+Warum sinnvoll:
+    DataFrame-Ausgaben sind zentral fuer Notebooks und sollen in Marimo sichtbar
+    bleiben.
+
+
+10. Widgets: Slider, Dropdown und abhaengige Ausgabe
+----------------------------------------------------
+
+Soll enthalten:
+    - ipywidgets.IntSlider
+    - ipywidgets.Dropdown
+    - display(widget)
+    - spaetere Ausgabe, die Widget-Werte verwendet
+
+Beispiel:
+    import ipywidgets as widgets
+    slider = widgets.IntSlider(value=3, min=1, max=10)
+    dropdown = widgets.Dropdown(
+        options=["small", "medium", "large"],
+        value="medium",
+        description="Size:"
+    )
+    display(slider)
+    display(dropdown)
+    print(slider.value, dropdown.value)
+
+Warum sinnvoll:
+    Widgets sind eines der wichtigsten komplizierten Jupyter-Features. In Marimo
+    sollte daraus idealerweise reaktive UI werden.
+
+
+11. interact(...)
+----------------
+
+Soll enthalten:
+    - ipywidgets.interact
+    - Funktion, die ueber interact gesteuert wird
+
+Beispiel:
+    from ipywidgets import interact
+
+    def square(x):
+        return x * x
+
+    interact(square, x=(1, 10))
+
+Warum sinnvoll:
+    interact funktioniert anders als direkt erstellte Widgets und erzeugt
+    automatisch UI. Das ist ein guter LLM-Testfall.
+
+
+12. get_ipython().run_line_magic(...)
+-------------------------------------
+
+Soll enthalten:
+    - get_ipython().run_line_magic(...)
+    - Magic, die sonst auch direkt vorkommen kann
+
+Beispiel:
+    get_ipython().run_line_magic("matplotlib", "inline")
+
+Warum sinnvoll:
+    Exportierte oder programmatisch erzeugte Notebooks enthalten Magics oft in
+    dieser Form statt als direkte %-Syntax.
+
+
+13. Variable wird spaeter ueberschrieben
+----------------------------------------
+
+Soll enthalten:
+    - gleiche Variable wird in mehreren Zellen gesetzt
+    - sichtbare Ausgaben vor und nach der Ueberschreibung
+
+Beispiel:
+    Cell 1:
+        x = 1
+        print(x)
+
+    Cell 2:
+        x = 2
+        print(x)
+
+Warum sinnvoll:
+    Jupyter erlaubt solche Muster, Marimo ist bei mehrfachen oeffentlichen
+    Definitionen strenger. Das ist ein zentraler Unterschied.
+
+
+14. Groesseres Notebook: Explorative Sales-Analyse
+--------------------------------------------------
+
+Soll enthalten:
+    - selbst erzeugter pandas DataFrame mit mindestens 50 Zeilen
+    - Datumsspalte, Kategorie/Region, Umsatz, Kosten
+    - Markdown-Zellen mit Ueberschriften und kurzer Interpretation
+    - display(df.head())
+    - Gruppierung nach Region oder Kategorie
+    - matplotlib oder seaborn Plot
+    - ipywidgets Dropdown fuer Region/Kategorie
+    - ipywidgets Slider fuer Mindestumsatz
+    - abhaengige Ausgabe basierend auf Widget-Werten
+    - mindestens eine Jupyter-Magic, z.B. %matplotlib inline oder %%time
+
+Warum sinnvoll:
+    Realistischer groesserer Workflow mit sichtbaren Ergebnissen. Kombiniert
+    DataFrames, Plots, Markdown, Widgets, Dependencies und Jupyter-spezifische
+    Syntax.
+
+
+15. Groesseres Notebook: Kombinierte Jupyter-Features
+-----------------------------------------------------
+
+Soll enthalten:
+    - Markdown-Zellen mit Report-Struktur
+    - get_ipython().run_line_magic(...)
+    - %timeit und %%time
+    - optional %cd oder ein sichtbarer Working-Directory-Bezug
+    - Erzeugen eines kleinen CSV- oder Text-Datensatzes im Notebook
+    - %%writefile zum Schreiben einer Datei
+    - !ls oder !dir zum Anzeigen erzeugter Dateien
+    - Shell Command mit Python-Variable, z.B. !cat {filename}
+    - Shell Output Capture, z.B. files = !ls *.csv
+    - Einlesen der Datei mit pandas oder pathlib
+    - display(DataFrame)
+    - ipywidgets fuer Filterung oder Parameter
+    - display(HTML(...)) oder Markdown-Ausgabe als kleiner Report
+    - Plot oder Tabelle als Endergebnis
+    - mehrere abhaengige Zellen, damit Datenfluss sichtbar wird
+
+Warum sinnvoll:
+    Viele echte Jupyter-Notebooks mischen mehrere Jupyter-spezifische Features in
+    einem Workflow: Magics, Shell-Kommandos, Dateisystemzugriffe, display(),
+    HTML-Reports und Plots. Das ist ein grosser integrierter Test dafuer, ob der
+    LLM-basierte Converter mehr kann als einzelne isolierte Spezialfaelle.
+
+
+Empfohlene Reihenfolge
+----------------------
+
+P1:
+    1. Basic Python mit Imports, Funktionen und Datenfluss
+    2. Timing Magics
+    3. %matplotlib inline mit Plot
+    7. Shell Commands mit Variablen und Output Capture
+    9. display(DataFrame)
+    10. Widgets: Slider, Dropdown und abhaengige Ausgabe
+
+P2:
+    4. %cd mit selbst erzeugter CSV
+    5. %%bash Cell Magic
+    6. %%writefile
+    8. display(HTML(...))
+    11. interact(...)
+    13. Variable wird spaeter ueberschrieben
+    14. Groesseres Notebook: Explorative Sales-Analyse
+
+P3:
+    12. get_ipython().run_line_magic(...)
+    15. Groesseres Notebook: Kombinierte Jupyter-Features

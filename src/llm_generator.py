@@ -10,7 +10,8 @@ from typing import Any
 from models import CodeCellAnalysis, DependencyGraph, NotebookCell
 
 OPENAI_TEST_MODEL = "gpt-4o-mini"  # Actual model for final runs: gpt-4o
-GEMINI_TEST_MODEL = "gemini-2.5-flash-lite"  # Actual model for final runs: gemini-2.5-pro
+GEMINI_NORMALIZATION_MODEL = "gemini-2.5-flash-lite"
+GEMINI_GENERATION_MODEL = "gemini-2.5-flash"  # Actual model for final runs: gemini-2.5-pro
 
 
 class LLMProvider(str, Enum):
@@ -134,13 +135,13 @@ class LLMGenerator:
         if provider in {LLMProvider.OPENAI, LLMProvider.CHATGPT}:
             return os.getenv("OPENAI_NORMALIZATION_MODEL", OPENAI_TEST_MODEL)
 
-        return os.getenv("GEMINI_NORMALIZATION_MODEL", GEMINI_TEST_MODEL)
+        return os.getenv("GEMINI_NORMALIZATION_MODEL", GEMINI_NORMALIZATION_MODEL)
 
     def _default_generation_model(self, provider: LLMProvider) -> str:
         if provider in {LLMProvider.OPENAI, LLMProvider.CHATGPT}:
             return os.getenv("OPENAI_GENERATION_MODEL", OPENAI_TEST_MODEL)
 
-        return os.getenv("GEMINI_GENERATION_MODEL", GEMINI_TEST_MODEL)
+        return os.getenv("GEMINI_GENERATION_MODEL", GEMINI_GENERATION_MODEL)
 
     def normalize_cell(self, code: str) -> str:
         prompt = (
@@ -169,7 +170,7 @@ class LLMGenerator:
                 f"LLM normalization failed: {self._format_llm_error(exc)}"
             ) from exc
 
-        return self._ensure_app_run(self._strip_code_fence(response.text))
+        return self._strip_code_fence(response.text)
 
     def generate_marimo_notebook(
         self,
@@ -230,8 +231,7 @@ class LLMGenerator:
             "9. Public variable names must be defined in exactly one cell. If a local helper variable is needed, prefix it with `_`.",
             "10. A dependent cell must receive values through function parameters, for example `def _(x): print(x)`.",
             "11. Cell function names must be unique private placeholders such as `_cell_0`, `_cell_1`, `_cell_2`; they are not notebook APIs.",
-            "12. End the file with `if __name__ == \"__main__\": app.run()`.",
-            "13. Return ONLY Python code. No markdown. No explanations.",
+            "12. Return ONLY Python code. No markdown. No explanations.",
             "",
             "Correct dependency example:",
             "@app.cell",
@@ -314,8 +314,3 @@ class LLMGenerator:
     def _strip_code_fence(self, code: str) -> str:
         return code.replace("```python", "").replace("```", "").strip()
 
-    def _ensure_app_run(self, code: str) -> str:
-        if "app.run()" in code:
-            return code
-
-        return f'{code.rstrip()}\n\nif __name__ == "__main__":\n    app.run()\n'

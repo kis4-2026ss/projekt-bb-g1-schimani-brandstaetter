@@ -1,0 +1,19 @@
+COMMAND: C:\Program Files\Python313\python.exe src/converter.py C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\test_notebooks\01_basic_python_imports_functions.ipynb C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\gemini_outputs\01_basic_python_imports_functions.py --provider gemini --no-test
+RETURN CODE: 0
+
+STDOUT:
+Loading notebook...
+Processing cells...
+Cell 1: Python OK
+Cell 2: Python OK
+Cell 3: Python OK
+Building dependency graph...
+Graph nodes: 3
+Graph edges: 2
+Generating Marimo notebook...
+Saved: C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\gemini_outputs\01_basic_python_imports_functions.py
+
+Done.
+
+
+STDERR:

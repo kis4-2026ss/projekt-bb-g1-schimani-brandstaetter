@@ -1,0 +1,2 @@
+test_id;notebook;output;conversion;python_syntax;static_marimo_shape;manual_review;final_status;notes;log_file
+15;15_combined_jupyter_features.ipynb;tests\gemini_outputs\15_combined_jupyter_features.py;STOPPED_QUOTA;SKIP;SKIP;YES;STOPPED_QUOTA;"quota or token limit reached; output file missing; output file missing; large combined Jupyter-feature notebook needs manual review";tests\evaluation\logs\gemini\15_combined_jupyter_features_1.log

@@ -1,0 +1,16 @@
+test_id;notebook;output;conversion;python_syntax;static_marimo_shape;manual_review;final_status;notes;log_file
+1;01_basic_python_imports_functions.ipynb;tests\openai_outputs\01_basic_python_imports_functions.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\01_basic_python_imports_functions.log
+2;02_timing_magics.ipynb;tests\openai_outputs\02_timing_magics.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\02_timing_magics.log
+3;03_matplotlib_inline_plot.ipynb;tests\openai_outputs\03_matplotlib_inline_plot.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;plot output should be visually checked;tests\evaluation\logs\openai\03_matplotlib_inline_plot.log
+4;04_cd_with_generated_csv.ipynb;tests\openai_outputs\04_cd_with_generated_csv.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\04_cd_with_generated_csv.log
+5;05_bash_cell_magic.ipynb;tests\openai_outputs\05_bash_cell_magic.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\05_bash_cell_magic.log
+6;06_writefile_magic.ipynb;tests\openai_outputs\06_writefile_magic.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\06_writefile_magic.log
+7;07_shell_commands_variables_capture.ipynb;tests\openai_outputs\07_shell_commands_variables_capture.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\07_shell_commands_variables_capture.log
+8;08_display_html.ipynb;tests\openai_outputs\08_display_html.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;HTML display should be visually checked;tests\evaluation\logs\openai\08_display_html.log
+9;09_display_dataframe.ipynb;tests\openai_outputs\09_display_dataframe.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;DataFrame display should be checked in Marimo;tests\evaluation\logs\openai\09_display_dataframe.log
+10;10_widgets_slider_dropdown.ipynb;tests\openai_outputs\10_widgets_slider_dropdown.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;widgets require manual interaction check;tests\evaluation\logs\openai\10_widgets_slider_dropdown.log
+11;11_interact_widget.ipynb;tests\openai_outputs\11_interact_widget.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;interact widget requires manual interaction check;tests\evaluation\logs\openai\11_interact_widget.log
+12;12_get_ipython_magic.ipynb;tests\openai_outputs\12_get_ipython_magic.py;PASS;PASS;PASS;NO;AUTO_PASS;;tests\evaluation\logs\openai\12_get_ipython_magic.log
+13;13_variable_redefinition.ipynb;tests\openai_outputs\13_variable_redefinition.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;variable redefinition is a semantic Marimo/Jupyter difference;tests\evaluation\logs\openai\13_variable_redefinition.log
+14;14_sales_analysis_widgets_plots.ipynb;tests\openai_outputs\14_sales_analysis_widgets_plots.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;large notebook with widgets, tables, and plots needs manual review;tests\evaluation\logs\openai\14_sales_analysis_widgets_plots.log
+15;15_combined_jupyter_features.ipynb;tests\openai_outputs\15_combined_jupyter_features.py;PASS;PASS;PASS;YES;MANUAL_REVIEW;large combined Jupyter-feature notebook needs manual review;tests\evaluation\logs\openai\15_combined_jupyter_features.log

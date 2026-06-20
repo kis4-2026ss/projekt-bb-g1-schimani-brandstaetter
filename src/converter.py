@@ -8,7 +8,6 @@ from pathlib import Path
 
 from ast_parser import AstParser
 from dependency_graph_builder import DependencyGraphBuilder
-from jupyter_normalizer import JupyterNormalizer
 from json_parser import JsonParser
 from llm_generator import LLMGenerator
 from models import CodeCellAnalysis, NotebookCell
@@ -21,14 +20,12 @@ class NotebookConverter:
         ast_parser: AstParser | None = None,
         graph_builder: DependencyGraphBuilder | None = None,
         llm_generator: LLMGenerator | None = None,
-        jupyter_normalizer: JupyterNormalizer | None = None,
         llm_delay_seconds: float = 1.0,
     ) -> None:
         self.json_parser = json_parser or JsonParser()
         self.ast_parser = ast_parser or AstParser()
         self.graph_builder = graph_builder or DependencyGraphBuilder()
         self.llm_generator = llm_generator or LLMGenerator()
-        self.jupyter_normalizer = jupyter_normalizer or JupyterNormalizer()
         self.llm_delay_seconds = llm_delay_seconds
 
     def convert(
@@ -103,17 +100,6 @@ class NotebookConverter:
         if self.ast_parser.validate_python(cell.source):
             print(f"Cell {cell.index}: Python OK")
             return cell
-
-        rule_based_code = self.jupyter_normalizer.normalize(cell.source)
-
-        if rule_based_code and self.ast_parser.validate_python(rule_based_code):
-            print(f"Cell {cell.index}: Normalized by rule")
-            return NotebookCell(
-                index=cell.index,
-                cell_type=cell.cell_type,
-                source=rule_based_code,
-                metadata=cell.metadata,
-            )
 
         print(f"Cell {cell.index}: Normalizing via LLM...")
         normalized_code = self.llm_generator.normalize_cell(cell.source)

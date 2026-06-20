@@ -9,9 +9,59 @@ from typing import Any
 
 from models import CodeCellAnalysis, DependencyGraph, NotebookCell
 
-OPENAI_TEST_MODEL = "gpt-4o-mini"  # Actual model for final runs: gpt-4o
+OPENAI_TEST_MODEL = "gpt-5.5"
 GEMINI_NORMALIZATION_MODEL = "gemini-2.5-flash-lite"
 GEMINI_GENERATION_MODEL = "gemini-2.5-flash"  # Actual model for final runs: gemini-2.5-pro
+
+# Inactive old prompt reference kept for documentation and comparison.
+# The active prompt uses NEW_MARIMO_PROMPT_RULES below.
+OLD_MARIMO_PROMPT_REFERENCE = (
+    "1. Use `import marimo as mo` and `app = mo.App()`.",
+    "2. Preserve notebook behavior.",
+    "3. Convert markdown cells into `mo.md(...)`.",
+    "4. Use one `@app.cell` per notebook cell.",
+    "5. Respect dependency relationships.",
+    "6. Variables produced by a cell that are needed by other cells MUST be explicitly returned at the end of the function.",
+    "7. CRUCIAL: If a cell returns only ONE variable, it MUST end with a trailing comma.",
+    "8. Do not call decorated cell functions directly.",
+    "9. Public variable names must be defined in exactly one cell.",
+    "10. A dependent cell must receive values through function parameters.",
+    "11. Cell function names must be unique private placeholders.",
+    "12. Return ONLY Python code. No markdown. No explanations.",
+)
+
+NEW_MARIMO_PROMPT_RULES = (
+    "1. Use module-level `import marimo` and `app = marimo.App()`.",
+    "   If cells need the `mo` API, provide it through an import cell:",
+    "   @app.cell",
+    "   def _imports():",
+    "       import marimo as mo",
+    "       return mo,",
+    "2. Preserve notebook behavior.",
+    "3. Convert markdown cells into `mo.md(...)`.",
+    "4. Use one `@app.cell` per notebook cell.",
+    "5. Respect dependency relationships.",
+    "6. Variables produced by a cell that are needed by other cells MUST be explicitly returned at the end of the function.",
+    "7. CRUCIAL: If a cell returns only ONE variable, it MUST end with a trailing comma (e.g., `return my_var,`).",
+    "8. Do not call decorated cell functions directly. Never write code like `x = __()`, `x = _()`, or `x = __init__()`.",
+    "9. Public variable names must be defined in exactly one cell. If a local helper variable is needed, prefix it with `_`.",
+    "10. A dependent cell must receive values through function parameters, for example `def _(x): print(x)`.",
+    "11. Cell function names must be unique private placeholders such as `_cell_0`, `_cell_1`, `_cell_2`; they are not notebook APIs.",
+    "12. Return ONLY Python code. No markdown. No explanations. No Jupyter specific code, only Marimo.",
+)
+
+NEW_MARIMO_CONVERSION_GUARDRAILS = (
+    "Important Marimo conversion rules:",
+    "- Do not preserve Jupyter/IPython-specific APIs. Never use `get_ipython`, `%...` magics, `!...` shell syntax, `IPython.display.display`, `IPython.display.HTML`, or `ipywidgets` in the generated output.",
+    "- Convert `display(df)` by making the object a Marimo cell output, for example by returning `df` or a named preview variable.",
+    "- Convert `display(HTML(...))` to `mo.Html(...)`.",
+    "- Convert `ipywidgets` controls to Marimo controls, e.g. `widgets.IntSlider` to `mo.ui.slider` and `widgets.Dropdown` to `mo.ui.dropdown`.",
+    "- If a cell creates visible Marimo UI/output objects such as `mo.Html(...)`, `mo.vstack(...)`, `mo.ui.*`, tables, or reports, ensure they are visible in Marimo and do not discard them.",
+    "- For file-writing side effects, return a small sentinel variable such as `file_written = True`; file-reading cells should depend on that sentinel to preserve execution order.",
+    "- Imports required by a cell must either be inside that same cell or provided by an earlier import cell and passed through parameters. Do not require a parameter before any cell returns it.",
+    "- Do not call decorated cell functions manually. Let Marimo manage cell execution.",
+    "- Preserve the original notebook behavior, but output idiomatic Marimo code rather than Jupyter-compatible fallback code.",
+)
 
 
 class LLMProvider(str, Enum):
@@ -83,6 +133,7 @@ class LLMGenerator:
         normalization_model: str | None = None,
         generation_model: str | None = None,
     ) -> None:
+        self._load_environment()
         self.provider = self._normalize_provider(provider)
         self.client = client or self._create_default_client(self.provider)
         self.normalization_model = normalization_model or self._default_normalization_model(
@@ -102,18 +153,18 @@ class LLMGenerator:
             raise ValueError(f"Unknown LLM provider `{value}`. Use one of: {valid}.") from exc
 
     def _create_default_client(self, provider: LLMProvider) -> LLMClient:
-        try:
-            from dotenv import load_dotenv
-        except ImportError as exc:
-            self._load_dotenv_fallback()
-        else:
-            load_dotenv(".env")
-
-
         if provider in {LLMProvider.OPENAI, LLMProvider.CHATGPT}:
             return OpenAIClient()
 
         return GeminiClient()
+
+    def _load_environment(self) -> None:
+        try:
+            from dotenv import load_dotenv
+        except ImportError:
+            self._load_dotenv_fallback()
+        else:
+            load_dotenv(".env")
 
     def _load_dotenv_fallback(self) -> None:
         env_path = ".env"
@@ -220,18 +271,9 @@ class LLMGenerator:
             "Generate a complete executable Marimo notebook.",
             "",
             "Requirements:",
-            "1. Use `import marimo as mo` and `app = mo.App()`.",
-            "2. Preserve notebook behavior.",
-            "3. Convert markdown cells into `mo.md(...)`.",
-            "4. Use one `@app.cell` per notebook cell.",
-            "5. Respect dependency relationships.",
-            "6. Variables produced by a cell that are needed by other cells MUST be explicitly returned at the end of the function.",
-            "7. CRUCIAL: If a cell returns only ONE variable, it MUST end with a trailing comma (e.g., `return my_var,`).",
-            "8. Do not call decorated cell functions directly. Never write code like `x = __()`, `x = _()`, or `x = __init__()`.",
-            "9. Public variable names must be defined in exactly one cell. If a local helper variable is needed, prefix it with `_`.",
-            "10. A dependent cell must receive values through function parameters, for example `def _(x): print(x)`.",
-            "11. Cell function names must be unique private placeholders such as `_cell_0`, `_cell_1`, `_cell_2`; they are not notebook APIs.",
-            "12. Return ONLY Python code. No markdown. No explanations.",
+            *NEW_MARIMO_PROMPT_RULES,
+            "",
+            *NEW_MARIMO_CONVERSION_GUARDRAILS,
             "",
             "Correct dependency example:",
             "@app.cell",

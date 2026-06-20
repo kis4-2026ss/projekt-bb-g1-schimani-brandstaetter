@@ -1,0 +1,303 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.10",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "3506811e0c1150668f575a506244615d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"combined-jupyter-feature-report\">Combined Jupyter feature report</h1>\n<span class=\"paragraph\">This notebook intentionally combines several Jupyter-specific\nfeatures in one larger workflow: magics, shell commands, generated\nfiles, captured shell output, widgets, rich display, timing, and\nplots.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "6f0a13f922adabfa80eac327e10240c0",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "e8181ad0d518993528d548ce1375b188",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"imports-and-report-configuration\">Imports and report configuration</h2>\n<span class=\"paragraph\">The next cell defines reusable report settings and imports the\nlibraries used throughout the notebook.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "186673db15b949393b186ee0fee9e079",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "7da7d736542b16c115457c95c06f0f70",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"generate-report-notes\">Generate report notes</h2>\n<span class=\"paragraph\">The next cell writes a small text file with Jupyter's writefile\nmagic.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "c8fad919a6acfafd89e28b8a1ecfe0aa",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "1d58567a86523e1a12f8fbfd2fd44ef7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"create-synthetic-report-data\">Create synthetic report data</h2>\n<span class=\"paragraph\">The CSV file is generated inside the notebook. No external input file\nis required.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "ba012c10c21a05677b9d8a255df1ecca",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "3b8e445733be6d5b1bc7da724d50dc12",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"inspect-generated-files-with-shell-commands\">Inspect generated files with shell commands</h2>\n<span class=\"paragraph\">These cells intentionally use Jupyter shell syntax and captured shell\noutput.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "c56f6e15e91ade92ac851b47d89e1a36",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "beca77fccfe7f3fd6f89f0adeae33945",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "ca699a7ccb1dba8f87988da718914a14",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "a1a811f75692d33cf8115b33e454488d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"read-files-back-into-python\">Read files back into Python</h2>\n<span class=\"paragraph\">The generated CSV and text note are loaded again for the report.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "18f9e1f7e045e7aedcc38f36f88c68b1",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "[Errno 2] No such file or directory: 'report_data.csv'",
+          "traceback": null
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/tmp/marimo_11547/__marimo__cell_ZHCJ_.py&quot;</span>, line <span class=\"m\">1</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">data</span> <span class=\"o\">=</span> <span class=\"n\">pd</span><span class=\"o\">.</span><span class=\"n\">read_csv</span><span class=\"p\">(</span><span class=\"n\">filename</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/mnt/c/Users/dbran/OneDrive/FH/4. Semester/KIS/Jupyter2Marimo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py&quot;</span>, line <span class=\"m\">873</span>, in <span class=\"n\">read_csv</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"n\">_read</span><span class=\"p\">(</span><span class=\"n\">filepath_or_buffer</span><span class=\"p\">,</span> <span class=\"n\">kwds</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/mnt/c/Users/dbran/OneDrive/FH/4. Semester/KIS/Jupyter2Marimo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py&quot;</span>, line <span class=\"m\">300</span>, in <span class=\"n\">_read</span>\n<span class=\"w\">    </span><span class=\"n\">parser</span> <span class=\"o\">=</span> <span class=\"n\">TextFileReader</span><span class=\"p\">(</span><span class=\"n\">filepath_or_buffer</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwds</span><span class=\"p\">)</span>\n<span class=\"w\">             </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/mnt/c/Users/dbran/OneDrive/FH/4. Semester/KIS/Jupyter2Marimo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py&quot;</span>, line <span class=\"m\">1645</span>, in <span class=\"n\">__init__</span>\n<span class=\"w\">    </span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_engine</span> <span class=\"o\">=</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_make_engine</span><span class=\"p\">(</span><span class=\"n\">f</span><span class=\"p\">,</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">engine</span><span class=\"p\">)</span>\n<span class=\"w\">                   </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/mnt/c/Users/dbran/OneDrive/FH/4. Semester/KIS/Jupyter2Marimo/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py&quot;</span>, line <span class=\"m\">1904</span>, in <span class=\"n\">_make_engine</span>\n<span class=\"w\">    </span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">handles</span> <span class=\"o\">=</span> <span class=\"n\">get_handle</span><span class=\"p\">(</span>\n<span class=\"w\">                   </span><span class=\"pm\">^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/mnt/c/Users/dbran/OneDrive/FH/4. Semester/KIS/Jupyter2Marimo/.venv/lib/python3.12/site-packages/pandas/io/common.py&quot;</span>, line <span class=\"m\">930</span>, in <span class=\"n\">get_handle</span>\n<span class=\"w\">    </span><span class=\"n\">handle</span> <span class=\"o\">=</span> <span class=\"nb\">open</span><span class=\"p\">(</span>\n<span class=\"w\">             </span><span class=\"pm\">^^^^^</span>\n<span class=\"gr\">FileNotFoundError</span>: <span class=\"n\">[Errno 2] No such file or directory: &#39;report_data.csv&#39;</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "17d8fd14a3eec8697efacb517849b3b9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"interactive-filters\">Interactive filters</h2>\n<span class=\"paragraph\">These widgets control which rows are included in the summary.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "d306fe097adfc11fe40c5ef39c8299f6",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "An ancestor raised an exception (FileNotFoundError): ",
+          "traceback": null
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "d611dc1ab2a7a521052bd6cceb31e292",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"filter-and-summarize-data\">Filter and summarize data</h2>\n<span class=\"paragraph\">The filtered result depends on both widget values.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "a68c82aedc1e58604d08bc3c820e5018",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "An ancestor raised an exception (FileNotFoundError): ",
+          "traceback": null
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "d71b19d7ed61b2969da4af934837011f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "a402e2ac51bbc767c0947ce7683ed5bc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"timed-report-calculation\">Timed report calculation</h2>\n<span class=\"paragraph\">This cell uses a cell magic around a small aggregate calculation.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "764a4e6a236ae3bef2e354535561588e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "7fc3bd7f7d96beb9521cecfdf871340f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"rich-html-report\">Rich HTML report</h2>\n<span class=\"paragraph\">The report combines values computed in earlier cells.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "6bce90e84741d3ac35c5be2f11212ffb",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "7734c69f9e718bbf795a98056096411b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"plot-results\">Plot results</h2>\n<span class=\"paragraph\">The final charts should make the category-level differences visible.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "10d7f8d1770a125049279d6544b38bdd",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "55c6738c02dfc4330daadcd424622625",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "An ancestor raised an exception (FileNotFoundError): ",
+          "traceback": null
+        }
+      ],
+      "console": []
+    }
+  ]
+}

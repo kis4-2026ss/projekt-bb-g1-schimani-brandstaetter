@@ -1,0 +1,55 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.10",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "aa190eaa32b3ead827330b323ba97912",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"bash-cell-magic\">Bash cell magic</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "10cec3466c4f65a3df0b459354d6d461",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "hello from bash\nKIS4Pr\u00e4sentation.pptx\nREADME.md\ndata.csv\ndemo\nextra.csv\ngemini-results.csv\ngemini_results.md\nproposal.md\nrequirements.txt\nsrc\ntest_cases.txt\ntests\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    }
+  ]
+}

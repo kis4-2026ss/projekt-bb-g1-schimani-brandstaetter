@@ -95,6 +95,19 @@ def test_id_from_path(path: Path) -> int:
     return int(path.name.split("_", 1)[0])
 
 
+def unique_path(path: Path) -> Path:
+    if not path.exists():
+        return path
+
+    counter = 1
+    while True:
+        candidate = path.with_name(f"{path.stem}_{counter}{path.suffix}")
+        if not candidate.exists():
+            return candidate
+
+        counter += 1
+
+
 def selected_notebooks(first: int, last: int) -> list[Path]:
     notebooks = sorted(NOTEBOOK_DIR.glob("*.ipynb"))
     return [
@@ -196,7 +209,7 @@ def evaluate_notebook(
 ) -> tuple[EvaluationResult, bool]:
     test_id = test_id_from_path(notebook_path)
     output_path = output_dir / f"{notebook_path.stem}.py"
-    log_path = LOG_DIR / provider / f"{notebook_path.stem}.log"
+    log_path = unique_path(LOG_DIR / provider / f"{notebook_path.stem}.log")
 
     if output_path.exists():
         output_path.unlink()
@@ -416,8 +429,8 @@ def main() -> None:
             print("Quota/token/rate-limit condition detected. Stopping remaining tests.")
             break
 
-    csv_path = EVALUATION_DIR / f"{provider}_results.csv"
-    markdown_path = EVALUATION_DIR / f"{provider}_results.md"
+    csv_path = unique_path(EVALUATION_DIR / f"{provider}_results.csv")
+    markdown_path = unique_path(EVALUATION_DIR / f"{provider}_results.md")
     write_results_csv(csv_path, results)
     write_results_markdown(markdown_path, provider, results)
     print_summary(results)

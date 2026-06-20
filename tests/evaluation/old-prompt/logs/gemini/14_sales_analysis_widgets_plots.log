@@ -1,0 +1,13 @@
+COMMAND: C:\Program Files\Python313\python.exe src/converter.py C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\test_notebooks\14_sales_analysis_widgets_plots.ipynb C:\Users\dbran\OneDrive\FH\4. Semester\KIS\Jupyter2Marimo\tests\gemini_outputs\14_sales_analysis_widgets_plots.py --provider gemini --no-test
+RETURN CODE: 1
+
+STDOUT:
+Loading notebook...
+Processing cells...
+Cell 1: Normalizing via LLM...
+
+Conversion aborted.
+Reason: LLM produced invalid Python in cell 1
+
+
+STDERR:
